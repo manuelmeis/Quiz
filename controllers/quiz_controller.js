@@ -14,11 +14,30 @@ exports.load=function(req,res,next,quizId) {
 
 //GET /quizes
 exports.index=function(req,res) {
-  models.Quiz.findAll().then(
+  var busqueda=(req.query.search || 'NO');
+  busqueda=busqueda.replace(" ", "%");
+  if (busqueda==='NO') {
+    models.Quiz.findAll().then(
+      function(quizes) {
+        res.render('quizes/index.ejs', {quizes:quizes});
+      }
+    ).catch(function(error) {next(error);});
+  } else {
+    models.Quiz.findAll({where: ["pregunta like ?","%"+busqueda+"%"]}).then(
+      function(quizes) {
+        quizes.sort(function(a,b){
+          if (a["pregunta"].toLowerCase()<b["pregunta"].toLowerCase()) return -1;
+          if (a["pregunta"].toLowerCase()>=b["pregunta"].toLowerCase()) return 1;
+        });
+        res.render('quizes/index.ejs', {quizes:quizes});
+      }
+    ).catch(function(error) {next(error);});
+  }
+  /*models.Quiz.findAll().then(
     function(quizes) {
       res.render('quizes/index.ejs', {quizes:quizes});
     }
-  ).catch(function(error) {next(error);})
+  ).catch(function(error) {next(error);})*/
 };
 
 // GET /quizes/:id
@@ -39,3 +58,5 @@ exports.answer=function(req,res) {
 exports.autores=function(req,res) {
   res.render('author',{autor:'Manuel Meis'});
 };
+
+//
