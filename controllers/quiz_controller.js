@@ -94,6 +94,28 @@ exports.create=function(req,res) {
   );*/
 };
 
+//GET /quizes/:id/edit
+exports.edit=function(req,res) {
+  var quiz=req.quiz; //autoload de instancia de quiz
+  res.render('quizes/edit', {quiz:quiz,errors: []});
+};
+
+//PUT /quizes/:id
+exports.update=function(req,res) {
+  req.quiz.pregunta=req.body.quiz.pregunta;
+  req.quiz.respuesta=req.body.quiz.respuesta;
+  var errors=req.quiz.validate();
+  if (errors) {
+    var i=0; var errores=new Array();
+    for (var prop in errors) errores[i++]={message:errors[prop]};
+    res.render('quizes/edit',{quiz:req.quiz, errors:errores});
+  } else {
+    req.quiz
+    .save({fields: ["pregunta","respuesta"]})
+    .then(function(){res.redirect('/quizes');});
+  }
+};
+
 //GET /author
 exports.autores=function(req,res) {
   res.render('author',{autor:'Manuel Meis'});

@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var methodOverride=require('method-override');
 
 var routes = require('./routes/index');
 //var users = require('./routes/users');
@@ -22,7 +23,7 @@ app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-
+app.use(methodOverride('_method'));
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
