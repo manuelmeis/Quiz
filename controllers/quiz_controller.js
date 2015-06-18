@@ -79,6 +79,7 @@ exports.create=function(req,res) {
     .save({fields: ["pregunta","respuesta"]})
     .then(function(){res.redirect('/quizes')});
   }
+};
   /*quiz
   .validate()
   .then(
@@ -92,7 +93,7 @@ exports.create=function(req,res) {
       }
     }
   );*/
-};
+
 
 //GET /quizes/:id/edit
 exports.edit=function(req,res) {
@@ -114,6 +115,13 @@ exports.update=function(req,res) {
     .save({fields: ["pregunta","respuesta"]})
     .then(function(){res.redirect('/quizes');});
   }
+};
+
+//DELETE /quizes/:id
+exports.destroy=function(req,res) {
+  req.quiz.destroy().then(function() {
+    res.redirect('/quizes');
+  }).catch(function(error){next(error)});
 };
 
 //GET /author
