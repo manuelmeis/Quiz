@@ -66,9 +66,6 @@ exports.new=function(req,res) {
 exports.create=function(req,res) {
   var quiz=models.Quiz.build(req.body.quiz);
   //guarda en DB los campos pregunta y respuesta de quiz
-  /*quiz.save({fields:["pregunta","respuesta"]}).then(function(){
-    res.redirect('/quizes');
-  })*/ //Redirección HTTP (URL relativo) lista de preguntas
   var errors=quiz.validate();
   if (errors) {
     var i=0; var errores=new Array();
@@ -76,7 +73,7 @@ exports.create=function(req,res) {
     res.render('quizes/new',{quiz:quiz, errors:errores});
   } else {
     quiz
-    .save({fields: ["pregunta","respuesta"]})
+    .save({fields: ["pregunta","respuesta","tema"]})
     .then(function(){res.redirect('/quizes')});
   }
 };
@@ -105,6 +102,8 @@ exports.edit=function(req,res) {
 exports.update=function(req,res) {
   req.quiz.pregunta=req.body.quiz.pregunta;
   req.quiz.respuesta=req.body.quiz.respuesta;
+  req.quiz.tema=req.body.quiz.tema;
+  console.log(req.quiz.tema);
   var errors=req.quiz.validate();
   if (errors) {
     var i=0; var errores=new Array();
@@ -112,7 +111,7 @@ exports.update=function(req,res) {
     res.render('quizes/edit',{quiz:req.quiz, errors:errores});
   } else {
     req.quiz
-    .save({fields: ["pregunta","respuesta"]})
+    .save({fields: ["pregunta","respuesta","tema"]})
     .then(function(){res.redirect('/quizes');});
   }
 };
@@ -126,7 +125,7 @@ exports.destroy=function(req,res) {
 
 //GET /author
 exports.autores=function(req,res) {
-  res.render('author',{autor:'Manuel Meis'});
+  res.render('author',{autor:'Manuel Meis', errors:[]});
 };
 
 //

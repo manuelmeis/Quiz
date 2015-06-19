@@ -2,5 +2,24 @@
 <input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>" /> <p>
 <label for="resp" class="rem">Respuesta: </label>
 <input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>" /> <p>
+<input type="hidden" id="tema" name="quiz[tema]" value="<%= quiz.tema %>" />
+<select id="ttem" name="ttem">
+ <option value="otro" <%if (quiz.tema==="otro"){%> selected <%}%>>Otro</option>
+ <option value="humanidades" <%if (quiz.tema==="otro"){%> selected <%}%>>Humanidades</option>
+ <option value="ocio" <%if (quiz.tema==="otro"){%> selected <%}%>>Ocio</option>
+ <option value="ciencia" <%if (quiz.tema==="otro"){%> selected <%}%>>Ciencia</option>
+ <option value="tecnologia" <%if (quiz.tema==="otro"){%> selected <%}%>>Tecnología</option>
+</select>
 <a href="/quizes"><button type="button">Cancelar</button></a>
-<input type="submit" value="Salvar">
+<input type="submit" onClick="lee_select();" value="Salvar">
+<script>
+var indice
+var valor
+function lee_select(){
+indice = document.forms[0].ttem.selectedIndex;
+valor = document.forms[0].ttem.options[indice].value
+document.getElementById('tema').value = valor;
+//alert(valor);
+//alert(document.getElementById('tema').value);
+}
+</script>
