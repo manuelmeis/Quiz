@@ -32,6 +32,33 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Gestion de auto-logout de session (2 minutos)
+app.use(function(req,res,next){
+
+ //fecha actual
+ var now= new Date();
+
+  //Recuperar fecha session ultima trans (si hay)
+ if (req.session.lastTrans){
+   var dosMins=2*1000*60; //2 minutos en milisegunds
+   //var dosMins=1000*20; //20 segundos
+   var last = new Date(req.session.lastTrans);
+   var diff=now.getTime() - last.getTime();
+   if (diff>dosMins){
+    //Elminar session
+      req.session.destroy();
+      res.redirect('/login');
+      return;
+   } else{
+     req.session.lastTrans= now;
+   }
+ } else {
+   req.session.lastTrans= now;
+ }
+  next();
+});
+
+
 //Helpers dinámicos:
 app.use(function(req,res,next){
   //guardar path en session.redir para después de login
