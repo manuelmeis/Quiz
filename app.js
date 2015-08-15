@@ -41,7 +41,7 @@ app.use(function(req,res,next){
   //Recuperar fecha session ultima trans (si hay)
  if (req.session.lastTrans){
    var dosMins=2*1000*60; //2 minutos en milisegunds
-   //var dosMins=1000*20; //20 segundos
+   //var dosMins=1000*20; //20 segundos para hacer pruebas
    var last = new Date(req.session.lastTrans);
    var diff=now.getTime() - last.getTime();
    if (diff>dosMins){
